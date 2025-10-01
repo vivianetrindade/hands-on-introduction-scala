@@ -9,5 +9,7 @@ object Challenges {
    * names, filters out the names that have a length greater than 4
    * characters and converts the remaining names to uppercase.
    */
-  def filterAndConvert(names: List[String]): List[String] = ???
+  def filterAndConvert(names: List[String]): List[String] = {
+    names.filter(_.length <= 4).map(_.toUpperCase)
+  }
 }
