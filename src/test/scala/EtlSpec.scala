@@ -1,8 +1,9 @@
+import Etl.etl
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
-import scala.util.Using
+
 import scala.io.Source
-import scala.util.{Try, Success}
+import scala.util.{Success, Try, Using}
 
 class EtlSpec extends AnyFreeSpec with Matchers {
 
@@ -14,7 +15,18 @@ class EtlSpec extends AnyFreeSpec with Matchers {
         "src/test/resources/testOutput.txt"
       val expectedFileContents = List("hello world")
 
-      etl(input, output)
+      etl(input, output)(using Etl.StringImpl)
+
+      readFile(output) shouldEqual Success(expectedFileContents)
+    }
+    "transform a text file containing numbers by doubling each number and saves it to a new file" in {
+      val input =
+        "src/test/resources/testInputNumbers.txt"
+      val output =
+        "src/test/resources/testOutputNumbers.txt"
+      val expectedFileContents = List("0", "2", "4", "6", "8", "10", "12")
+
+      etl(input, output)(using Etl.IntImpl)
 
       readFile(output) shouldEqual Success(expectedFileContents)
     }
